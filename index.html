@@ -1,23 +1,508 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zonai.cn</title>
-    <style>
-        body { font-family: -apple-system, "Segoe UI", sans-serif; display: flex;
-               min-height: 100vh; align-items: center; justify-content: center;
-               margin: 0; background: #f5f5f5; color: #333; }
-        .card { background: #fff; padding: 3rem 4rem; border-radius: 12px;
-                box-shadow: 0 4px 16px rgba(0,0,0,.08); text-align: center; }
-        h1 { margin: 0 0 .5rem; font-size: 1.6rem; }
-        p { margin: 0; color: #888; }
-    </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="葬爱家族,非主流,火星文,伤感语录,空间素材">
+<meta name="description" content="葬爱家族 —— 非主流文化引导站，收录家族族谱、火星文、伤感日记与空间素材。">
+<title>葬愛家族 · 非主流引導站</title>
+
+<link href="https://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+    /* ============ 基础 ============ */
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+        background: #fbfbfa;
+        color: #111;
+        font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    .serif { font-family: Georgia, "Songti SC", "SimSun", "Noto Serif SC", serif; }
+
+    a { color: #111; text-decoration: none; }
+    a:hover, a:focus { color: #111; text-decoration: none; outline: none; }
+    ::selection { background: #111; color: #fff; }
+    p { margin: 0; }
+
+    /* ============ 滚动进度条 ============ */
+    .scroll-progress {
+        position: fixed; top: 0; left: 0; right: 0; height: 2px;
+        z-index: 2000; background: transparent;
+    }
+    .scroll-progress span {
+        display: block; height: 100%; width: 0;
+        background: #111;
+        transition: width .1s linear;
+    }
+
+    /* ============ 导航 ============ */
+    .site-nav {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+        padding: 24px 0;
+        border-bottom: 1px solid transparent;
+        transition: all .35s ease;
+    }
+    .site-nav.scrolled {
+        padding: 14px 0;
+        background: rgba(251,251,250,.88);
+        -webkit-backdrop-filter: saturate(180%) blur(12px);
+        backdrop-filter: saturate(180%) blur(12px);
+        border-bottom-color: #ebebeb;
+    }
+    .brand {
+        font-size: 13px; font-weight: 700;
+        letter-spacing: .34em; text-transform: uppercase;
+    }
+    .brand .mark { color: #7a5cff; letter-spacing: 0; margin-right: 10px; }
+    .nav-mini a {
+        position: relative;
+        font-size: 11px; letter-spacing: .2em; color: #9a9a9a;
+        margin-left: 30px; padding-bottom: 4px;
+        transition: color .25s ease;
+    }
+    .nav-mini a::after {
+        content: ""; position: absolute; left: 0; bottom: 0;
+        width: 0; height: 1px; background: #111;
+        transition: width .3s ease;
+    }
+    .nav-mini a:hover { color: #111; }
+    .nav-mini a:hover::after { width: 100%; }
+    .nav-mini a.enter { color: #111; }
+    .nav-mini a.enter::after { width: 100%; }
+
+    /* ============ 首屏 ============ */
+    .hero {
+        position: relative;
+        padding: 190px 0 130px;
+        text-align: center;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: "";
+        position: absolute; top: -220px; left: 50%;
+        width: 900px; height: 620px; margin-left: -450px;
+        background: radial-gradient(ellipse at center, rgba(122,92,255,.10) 0%, rgba(251,251,250,0) 68%);
+        pointer-events: none;
+    }
+    .hero > .container { position: relative; }
+
+    .hero .mark-lg {
+        font-size: 20px; color: #c9bfff; line-height: 1;
+        margin-bottom: 40px;
+        -webkit-animation: breathe 4.5s ease-in-out infinite;
+        animation: breathe 4.5s ease-in-out infinite;
+    }
+    @-webkit-keyframes breathe { 0%,100%{opacity:.55;transform:scale(1)} 50%{opacity:1;transform:scale(1.12)} }
+    @keyframes breathe { 0%,100%{opacity:.55;transform:scale(1)} 50%{opacity:1;transform:scale(1.12)} }
+
+    .hero h1 {
+        font-size: 84px; line-height: 1.06; font-weight: 400;
+        letter-spacing: .16em; margin: 0 0 30px;
+        text-indent: .16em;
+    }
+    .hero h1 .light { color: #c4c4c4; }
+    .hero .en {
+        font-size: 10px; letter-spacing: .58em; color: #b4b4b4;
+        text-indent: .58em; margin-bottom: 34px;
+    }
+    .hero .slogan {
+        font-size: 15px; letter-spacing: .2em; color: #6b6b6b;
+        text-indent: .2em;
+    }
+    .hero .slogan .dot { color: #d8d8d8; margin: 0 12px; }
+    .thin-rule {
+        width: 1px; height: 56px; margin: 40px auto;
+        background: linear-gradient(to bottom, #111 0%, rgba(17,17,17,0) 100%);
+    }
+    .hero-actions { margin-top: 8px; }
+    .btn-line {
+        display: inline-block; padding: 14px 40px;
+        border: 1px solid #111; background: transparent; color: #111;
+        font-size: 11px; letter-spacing: .26em; text-indent: .26em;
+        transition: all .3s ease;
+    }
+    .btn-line:hover { background: #111; color: #fff; letter-spacing: .34em; }
+    .btn-line i { margin-left: 8px; font-size: 10px; }
+    .btn-ghost {
+        display: inline-block; padding: 14px 40px; margin-left: 14px;
+        border: 1px solid #e4e4e4; color: #9a9a9a;
+        font-size: 11px; letter-spacing: .26em; text-indent: .26em;
+        transition: all .3s ease;
+    }
+    .btn-ghost:hover { border-color: #111; color: #111; }
+
+    .scroll-hint {
+        margin-top: 64px; font-size: 10px; letter-spacing: .3em; color: #c2c2c2;
+    }
+    .scroll-hint i { display: block; margin-top: 10px; font-size: 12px;
+        -webkit-animation: drop 2s ease-in-out infinite; animation: drop 2s ease-in-out infinite; }
+    @-webkit-keyframes drop { 0%,100%{transform:translateY(0);opacity:.4} 50%{transform:translateY(6px);opacity:1} }
+    @keyframes drop { 0%,100%{transform:translateY(0);opacity:.4} 50%{transform:translateY(6px);opacity:1} }
+
+    /* ============ 数据条 ============ */
+    .stats { border-top: 1px solid #ececec; border-bottom: 1px solid #ececec; padding: 46px 0; }
+    .stats .num { font-size: 30px; letter-spacing: .06em; line-height: 1; }
+    .stats .num em { font-style: normal; font-size: 13px; color: #b4b4b4; margin-left: 4px; }
+    .stats .cap { font-size: 10px; letter-spacing: .28em; color: #a8a8a8; margin-top: 12px; }
+    .stats .col-sm-4 + .col-sm-4 { border-left: 1px solid #ececec; }
+
+    /* ============ 通用小节 ============ */
+    .section { padding: 118px 0; }
+    .section-tag {
+        font-size: 10px; letter-spacing: .46em; color: #bfbfbf;
+        text-align: center; text-indent: .46em; margin-bottom: 58px;
+    }
+    .section-tag::before,
+    .section-tag::after { content: "—"; color: #dfdfdf; margin: 0 14px; }
+
+    /* ============ 引导卡片 ============ */
+    .guide-row { margin: 0 -12px; }
+    .guide-row > [class*="col-"] { padding: 0 12px 24px; }
+    .guide-item {
+        display: block; position: relative; overflow: hidden;
+        height: 100%; padding: 44px 32px 40px;
+        border: 1px solid #ececec; background: #fff;
+        transition: background .38s ease, border-color .38s ease, transform .38s ease, box-shadow .38s ease;
+    }
+    .guide-item .idx {
+        display: block; font-size: 30px; line-height: 1;
+        color: #ececec; margin-bottom: 26px;
+        transition: color .38s ease;
+    }
+    .guide-item .ico {
+        display: block; font-size: 19px; color: #7a5cff; margin-bottom: 20px;
+        transition: color .38s ease, transform .38s ease;
+    }
+    .guide-item h3 {
+        font-size: 14px; letter-spacing: .14em; font-weight: 700;
+        margin: 0 0 14px; transition: color .38s ease;
+    }
+    .guide-item p {
+        font-size: 12px; line-height: 2.1; letter-spacing: .04em; color: #9a9a9a;
+        transition: color .38s ease;
+    }
+    .guide-item .arrow {
+        position: absolute; right: 26px; bottom: 26px;
+        font-size: 12px; color: #dcdcdc;
+        opacity: 0; transform: translateX(-6px);
+        transition: all .38s ease;
+    }
+    .guide-item:hover {
+        background: #111; border-color: #111;
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(0,0,0,.14);
+    }
+    .guide-item:hover .idx { color: #3d3d3d; }
+    .guide-item:hover .ico { color: #fff; transform: scale(1.1); }
+    .guide-item:hover h3 { color: #fff; }
+    .guide-item:hover p { color: #a5a5a5; }
+    .guide-item:hover .arrow { opacity: 1; transform: translateX(0); color: #fff; }
+
+    /* ============ 语录 ============ */
+    .quote-band {
+        padding: 120px 0; text-align: center;
+        background: #111; color: #fff;
+    }
+    .quote-band .qmark {
+        font-size: 42px; line-height: 1; color: #3a3a3a; margin-bottom: 34px;
+    }
+    .quote-band p {
+        font-size: 19px; line-height: 2.4; letter-spacing: .12em;
+        color: #f2f2f2;
+    }
+    .quote-band p + p { margin-top: 18px; color: #b6b6b6; font-size: 16px; }
+    .quote-band .sign {
+        font-size: 10px; letter-spacing: .34em; color: #6d6d6d; margin-top: 40px;
+    }
+    .quote-band .sign span { color: #9b86ff; }
+
+    /* ============ 入驻 ============ */
+    .join-form { max-width: 520px; margin: 0 auto; }
+    .join-form .field {
+        width: 100%; padding: 14px 2px;
+        border: 0; border-bottom: 1px solid #e4e4e4;
+        background: transparent; font-size: 13px; letter-spacing: .08em;
+        color: #111; outline: none;
+        transition: border-color .3s ease;
+    }
+    .join-form .field:focus { border-bottom-color: #111; }
+    .join-form .field::-webkit-input-placeholder { color: #c3c3c3; letter-spacing: .1em; }
+    .join-form .field:-moz-placeholder { color: #c3c3c3; letter-spacing: .1em; }
+    .join-form .submit {
+        width: 100%; margin-top: 34px; padding: 15px 0;
+        border: 1px solid #111; background: transparent;
+        font-size: 11px; letter-spacing: .3em; text-indent: .3em; color: #111;
+        transition: all .3s ease;
+    }
+    .join-form .submit:hover { background: #111; color: #fff; }
+    .join-tip { font-size: 11px; letter-spacing: .1em; color: #bdbdbd; margin-top: 18px; }
+
+    /* ============ 底部 ============ */
+    .site-footer {
+        padding: 76px 0 54px; text-align: center;
+        border-top: 1px solid #ececec;
+    }
+    .footer-brand {
+        font-size: 12px; letter-spacing: .3em; color: #111; font-weight: 700;
+    }
+    .footer-links { margin: 26px 0 30px; }
+    .footer-links a {
+        font-size: 11px; letter-spacing: .18em; color: #a2a2a2;
+        margin: 0 16px; transition: color .25s ease;
+    }
+    .footer-links a:hover { color: #111; }
+    .beian {
+        font-size: 12px; letter-spacing: .04em; color: #a2a2a2; line-height: 2.6;
+    }
+    .beian a { color: #a2a2a2; transition: color .25s ease; }
+    .beian a:hover { color: #111; }
+    .beian i { margin-right: 5px; font-size: 11px; }
+    .beian .sep { color: #dedede; margin: 0 10px; }
+    .copyright {
+        margin-top: 26px; font-size: 10px; letter-spacing: .18em; color: #c5c5c5;
+    }
+
+    /* ============ 回到顶部 ============ */
+    #toTop {
+        position: fixed; right: 30px; bottom: 30px;
+        width: 40px; height: 40px; line-height: 38px; text-align: center;
+        border: 1px solid #e4e4e4; background: rgba(255,255,255,.9); color: #9a9a9a;
+        display: none; z-index: 999; transition: all .3s ease;
+    }
+    #toTop:hover { border-color: #111; color: #111; transform: translateY(-3px); }
+
+    /* ============ 进场动画 ============ */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal.d1 { transition-delay: .1s; }
+    .reveal.d2 { transition-delay: .2s; }
+    .reveal.d3 { transition-delay: .3s; }
+    .reveal.d4 { transition-delay: .4s; }
+
+    /* ============ 移动端 ============ */
+    @media (max-width: 991px) {
+        .hero h1 { font-size: 60px; }
+        .stats .num { font-size: 24px; }
+    }
+    @media (max-width: 767px) {
+        .hero { padding: 140px 0 90px; }
+        .hero h1 { font-size: 40px; letter-spacing: .1em; text-indent: .1em; }
+        .hero .en { letter-spacing: .34em; }
+        .hero .slogan { font-size: 13px; letter-spacing: .1em; }
+        .btn-line, .btn-ghost { padding: 13px 28px; }
+        .btn-ghost { margin-left: 0; margin-top: 12px; }
+        .section { padding: 78px 0; }
+        .quote-band { padding: 84px 0; }
+        .quote-band p { font-size: 16px; line-height: 2.2; }
+        .quote-band p + p { font-size: 14px; }
+        .stats .col-sm-4 + .col-sm-4 { border-left: 0; border-top: 1px solid #ececec; margin-top: 26px; padding-top: 26px; }
+        .nav-mini a { margin-left: 18px; }
+        .site-footer { padding: 54px 0 42px; }
+        .footer-links a { margin: 0 10px; line-height: 2.4; display: inline-block; }
+    }
+</style>
 </head>
 <body>
-    <div class="card">
-        <h1>zonai.cn</h1>
-        <p>Site initialized by oject.php</p>
+
+<div class="scroll-progress"><span></span></div>
+
+<!-- ===== 导航 ===== -->
+<header class="site-nav">
+    <div class="container">
+        <div class="pull-left brand"><span class="mark">❥</span>ZANG&nbsp;AI</div>
+        <nav class="pull-right nav-mini">
+            <a href="#guide">导航</a>
+            <a href="#words">语录</a>
+            <a href="#join">入驻</a>
+        </nav>
+        <div class="clearfix"></div>
     </div>
+</header>
+
+<!-- ===== 首屏 ===== -->
+<section class="hero">
+    <div class="container">
+        <div class="mark-lg">❥</div>
+        <h1 class="serif">葬<span class="light">愛</span>家族</h1>
+        <div class="en">NON-MAINSTREAM · SINCE 2007</div>
+        <div class="slogan serif">以 愛 之 名<span class="dot">·</span>葬 於 時 光</div>
+        <div class="thin-rule"></div>
+        <div class="hero-actions">
+            <a href="#guide" class="btn-line">进 入 家 族<i class="fa fa-angle-right"></i></a>
+            <a href="#join" class="btn-ghost">申 请 入 驻</a>
+        </div>
+        <div class="scroll-hint">SCROLL<i class="fa fa-angle-down"></i></div>
+    </div>
+</section>
+
+<!-- ===== 数据 ===== -->
+<section class="stats">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-4 reveal">
+                <div class="num serif">12,340<em>+</em></div>
+                <div class="cap">家 族 成 员</div>
+            </div>
+            <div class="col-sm-4 reveal d2">
+                <div class="num serif">8,765<em>条</em></div>
+                <div class="cap">伤 感 语 录</div>
+            </div>
+            <div class="col-sm-4 reveal d3">
+                <div class="num serif">19<em>年</em></div>
+                <div class="cap">非 主 流 纪 年</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 引导 ===== -->
+<section class="section" id="guide">
+    <div class="container">
+        <div class="section-tag reveal">FAMILY GUIDE</div>
+        <div class="row guide-row">
+            <div class="col-sm-6 col-md-3 reveal">
+                <a href="#" class="guide-item">
+                    <span class="idx serif">01</span>
+                    <i class="fa fa-users ico"></i>
+                    <h3>家族族谱</h3>
+                    <p>冷少、残雪、泪蝶……<br>一纸名单，半世青春。</p>
+                    <i class="fa fa-arrow-right arrow"></i>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 reveal d1">
+                <a href="#" class="guide-item">
+                    <span class="idx serif">02</span>
+                    <i class="fa fa-font ico"></i>
+                    <h3>火星文转换</h3>
+                    <p>繁体、异体、特殊符号一键生成，<br>让文字带上你的体温。</p>
+                    <i class="fa fa-arrow-right arrow"></i>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 reveal d2">
+                <a href="#" class="guide-item">
+                    <span class="idx serif">03</span>
+                    <i class="fa fa-book ico"></i>
+                    <h3>淚の日記</h3>
+                    <p>那些说不出口的句子，<br>都留在这一页。</p>
+                    <i class="fa fa-arrow-right arrow"></i>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 reveal d3">
+                <a href="#" class="guide-item">
+                    <span class="idx serif">04</span>
+                    <i class="fa fa-picture-o ico"></i>
+                    <h3>空间素材</h3>
+                    <p>闪图、皮肤、留言代码，<br>装点你的小小世界。</p>
+                    <i class="fa fa-arrow-right arrow"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 语录 ===== -->
+<section class="quote-band" id="words">
+    <div class="container">
+        <div class="qmark serif reveal">“</div>
+        <p class="serif reveal d1">莪們旳愛，埋葬在時光裡，從此不問歸期。</p>
+        <p class="serif reveal d2">誰也不是誰旳誰，只是在非主流裡，做了一場很長的夢。</p>
+        <div class="sign reveal d3">葬 愛 家 族 <span>❥</span> 語 錄 · 2007 — FOREVER</div>
+    </div>
+</section>
+
+<!-- ===== 入驻 ===== -->
+<section class="section" id="join">
+    <div class="container text-center">
+        <div class="section-tag reveal">JOIN US</div>
+        <p class="serif reveal d1" style="font-size:15px;line-height:2.3;letter-spacing:.1em;color:#6b6b6b;">
+            留下你的家族昵称与一句自我介绍，<br>我们会在 48 小时内回复。
+        </p>
+        <form class="join-form reveal d2" style="margin-top:46px;" onsubmit="return false;">
+            <input type="text" class="field" placeholder="你的家族昵称">
+            <input type="text" class="field" style="margin-top:14px;" placeholder="联系方式（QQ / 邮箱）">
+            <button type="submit" class="submit">递 交 申 请</button>
+            <div class="join-tip">提交即表示同意本站家族公约</div>
+        </form>
+    </div>
+</section>
+
+<!-- ===== 底部 ===== -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-brand">❥ 葬 愛 家 族</div>
+        <div class="footer-links">
+            <a href="#guide">家族导航</a>
+            <a href="#words">语录</a>
+            <a href="#join">入驻</a>
+            <a href="#">关于本站</a>
+            <a href="#">留言板</a>
+        </div>
+        <div class="beian">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">
+                <i class="fa fa-certificate"></i>鲁ICP备2024092961号-26
+            </a>
+            <span class="sep">|</span>
+            <a href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=37130202373077" target="_blank" rel="nofollow">
+                <i class="fa fa-shield"></i>鲁公网安备37130202373077号
+            </a>
+        </div>
+        <div class="copyright">&copy; 2026 ZANG AI FAMILY · ALL RIGHTS RESERVED</div>
+    </div>
+</footer>
+
+<a href="#" id="toTop"><i class="fa fa-angle-up"></i></a>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        var $win = $(window), $doc = $(document);
+
+        /* 导航吸顶 + 进度条 */
+        function onScroll() {
+            var top = $win.scrollTop();
+            $('.site-nav').toggleClass('scrolled', top > 40);
+
+            var max = $doc.height() - $win.height();
+            var pct = max > 0 ? (top / max) * 100 : 0;
+            $('.scroll-progress span').css('width', pct + '%');
+
+            if (top > 400) { $('#toTop').fadeIn(220); } else { $('#toTop').fadeOut(220); }
+        }
+        $win.on('scroll', onScroll);
+
+        /* 进场动画 */
+        function reveal() {
+            var base = $win.height() - 90;
+            $('.reveal').not('.in').each(function () {
+                var $el = $(this);
+                if ($el.offset().top < $win.scrollTop() + base) { $el.addClass('in'); }
+            });
+        }
+        $win.on('scroll', reveal);
+
+        /* 平滑滚动 */
+        $('a[href^="#"]').on('click', function (e) {
+            var t = $(this.getAttribute('href'));
+            if (t.length) {
+                e.preventDefault();
+                var offset = $(this).hasClass('btn-line') ? 60 : 90;
+                $('html, body').animate({ scrollTop: t.offset().top - offset }, 600, 'swing');
+            }
+        });
+
+        $('#toTop').on('click', function (e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, 500);
+        });
+
+        onScroll();
+        reveal();
+    });
+</script>
 </body>
 </html>
